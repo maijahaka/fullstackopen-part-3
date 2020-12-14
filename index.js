@@ -1,7 +1,8 @@
 const { response } = require('express')
 const express = require('express')
-const { ppid } = require('process')
 const app = express()
+
+app.use(express.json())
 
 let persons = [
     {
@@ -39,6 +40,19 @@ app.get('/api/persons/:id', (req, res) => {
     } else {
         res.status(404).end()
     }
+})
+
+app.post('/api/persons', (req, res) => {
+    const getRandomInt = (max) => (
+        Math.floor(Math.random() * Math.floor(max))
+    )
+    
+    const person = req.body
+    person.id = getRandomInt(10000)
+
+    persons = persons.concat(person)
+
+    res.json(person)
 })
 
 app.delete('/api/persons/:id', (req, res) => {
