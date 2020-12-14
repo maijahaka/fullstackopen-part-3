@@ -46,7 +46,27 @@ app.post('/api/persons', (req, res) => {
     const getRandomInt = (max) => (
         Math.floor(Math.random() * Math.floor(max))
     )
-    
+
+    const body = req.body
+
+    if (!body.name) {
+        return res.status(400).json({
+            error: 'name missing'
+        })
+    }
+
+    if (!body.number) {
+        return res.status(400).json({
+            error: 'number missing'
+        })
+    }
+
+    if (persons.find(p => p.name === body.name)) {
+        return res.status(400).json({
+            error: 'name must be unigue'
+        })
+    }
+
     const person = req.body
     person.id = getRandomInt(10000)
 
