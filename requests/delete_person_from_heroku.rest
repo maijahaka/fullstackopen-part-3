@@ -1,0 +1,1 @@
+DELETE http://obscure-earth-44379.herokuapp.com/api/persons/1
