@@ -63,10 +63,6 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons', (req, res) => {
-    const getRandomInt = (max) => (
-        Math.floor(Math.random() * Math.floor(max))
-    )
-
     const body = req.body
 
     if (!body.name) {
@@ -81,18 +77,20 @@ app.post('/api/persons', (req, res) => {
         })
     }
 
-    if (persons.find(p => p.name === body.name)) {
-        return res.status(400).json({
-            error: 'name must be unigue'
-        })
-    }
+    //if (persons.find(p => p.name === body.name)) {
+    //    return res.status(400).json({
+    //        error: 'name must be unigue'
+    //    })
+    //}
 
-    const person = req.body
-    person.id = getRandomInt(10000)
+    const person = new Person({
+        name: body.name,
+        number: body.number
+    })
 
-    persons = persons.concat(person)
-
-    res.json(person)
+    person.save().then(savedPerson => {
+        res.json(savedPerson)
+    })
 })
 
 app.delete('/api/persons/:id', (req, res) => {
